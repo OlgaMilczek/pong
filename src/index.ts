@@ -44,11 +44,11 @@ if (ctx && scoreEl) {
     const computer = new Racket (WIDTH - RACKET_OFFSET, HEIGHT/ 2 - RACKET_SIZE, RACKET_SIZE, RACKET_WEIGHT);
 
     document.addEventListener('keydown', e => {
-        if (e.key === 'ArrowUp') {
+        if (e.key === 'ArrowDown') {
             if (player.y + player.size < HEIGHT) {
                 player.move(1);
             }
-        } else if (e.key === 'ArrowDown') {
+        } else if (e.key === 'ArrowUp') {
             if (player.y > 0) {
                 player.move(-1);
             }
