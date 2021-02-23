@@ -26,11 +26,16 @@ export class Ball {
         this.velocity = initialVelocity;
     }
 
+    resetBallPosition(initialX: number, initialY: number) {
+        this.x = initialX;
+        this.y = initialY;
+    }
+
     render(ctx: CanvasRenderingContext2D) {
         const shape = new Path2D();
         shape.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
 
-        ctx.fillStyle = 'red';
+        ctx.fillStyle = '#555';
         ctx.fill(shape);
     }
 };
