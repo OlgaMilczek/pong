@@ -1,85 +1,74 @@
 import './scss/app.scss';
 
-import { Ball } from './engine/Ball';
-import { Racket } from './engine/Racket';
+import { Ball } from './engine/ball';
+import { Racket } from './engine/racket';
 import { bounce } from './engine/bounce';
+import { findNewDeltas } from './engine/findNewDeltas';
 
-const WIDTH = window.innerWidth - 10;
-const HEIGHT = window.innerHeight - 10;
-const BALL_SIZE = 30;
-const RACKET_SIZE = 180;
-const RACKET_WEIGHT = 10;
-const INITIAL_VELOCITY = 3;
-const RACKET_OFFSET = 100;
+import {createCanvas, createScore, drawCourt } from './display/render';
+import { addEventForMove, addEventForMoveStop } from './display/setEventListeners';
 
-const createScore = () => {
-    const el = document.createElement('div');
-    el.classList.add('score');
-
-    document.body.appendChild(el);
-
-    return el;
-}
-
-const createCanvas = (width: number, height: number): HTMLCanvasElement => {
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
-
-    document.body.appendChild(canvas);
-
-    return canvas;
-}
+import {
+    WIDTH,
+    HEIGHT,
+    BALL_SIZE ,
+    RACKET_SIZE,
+    RACKET_WEIGHT, 
+    INITIAL_VELOCITY,
+    RACKET_OFFSET,
+    TOLERANCE,
+    OBSTACLES } from './variables';
 
 const canvas = createCanvas(WIDTH, HEIGHT);
-const scoreEl = createScore();
+const [scoreEl, playerScore, computerScore ] = createScore();
 const ctx = canvas.getContext('2d');
 
 if (ctx && scoreEl) {
-    let deltaX: number;
-    let deltaY: number;
+    let deltaX: number | undefined;
+    let deltaY: number | undefined;
+    let isGameOver: boolean = false;
 
-    const ball = new Ball (WIDTH/ 2, HEIGHT/ 2, 1, 1, BALL_SIZE, INITIAL_VELOCITY);
-    const player = new Racket (RACKET_OFFSET, HEIGHT/ 2 - RACKET_SIZE, RACKET_SIZE, RACKET_WEIGHT);
-    const computer = new Racket (WIDTH - RACKET_OFFSET, HEIGHT/ 2 - RACKET_SIZE, RACKET_SIZE, RACKET_WEIGHT);
+    const ball = new Ball (WIDTH/ 2, HEIGHT/ 2, 1, -1, BALL_SIZE, INITIAL_VELOCITY);
+    const player = new Racket (RACKET_OFFSET, HEIGHT/ 2 - RACKET_SIZE / 2, RACKET_SIZE, RACKET_WEIGHT);
+    const computer = new Racket (WIDTH - RACKET_OFFSET, HEIGHT/ 2 - RACKET_SIZE / 2, RACKET_SIZE, RACKET_WEIGHT);
 
-    document.addEventListener('keydown', e => {
-        if (e.key === 'ArrowDown') {
-            if (player.y + player.size < HEIGHT) {
-                player.move(1);
-            }
-        } else if (e.key === 'ArrowUp') {
-            if (player.y > 0) {
-                player.move(-1);
-            }
-        }
-    });
+    playerScore.textContent = player.getScore().toString();
+    computerScore.textContent = computer.getScore().toString();
 
-    let isGameOver = false; 
+    document.addEventListener('keydown', e => addEventForMove(e, player, HEIGHT));
+
+    document.addEventListener('keyup', e => addEventForMoveStop(e, player, HEIGHT));
+
     const render = () => {
-        ctx.fillStyle = 'gray';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        drawCourt(ctx, canvas.width, canvas.height, RACKET_OFFSET, RACKET_WEIGHT);
         
         player.render(ctx);
         computer.render(ctx);
+        if (ball.x > WIDTH / 2 && ball.deltaX > 0 ) {
+            computer.moveComputer(ball.y, HEIGHT, ball.deltaY);
+        }
 
         ball.move();
         ball.render(ctx);
 
-
-        //TO BE CHANGE
-        if (ball.x < 0 || ball.x >= WIDTH) {
-            [deltaX, deltaY] = bounce(ball.deltaX, ball.deltaY, 'racket');
+        if (ball.y - ball.size < 0 || ball.y + ball.size >= HEIGHT ) {
+            //Piłka jest odbita przez ścianę
+            [deltaX, deltaY] = bounce(ball.deltaX, ball.deltaY, OBSTACLES[0]); 
         }
 
-        if (ball.y < 0 || ball.y >= HEIGHT) {
-            [deltaX, deltaY] = bounce(ball.deltaX, ball.deltaY, 'wall');
+        if (ball.x + ball.size >= computer.x ) {
+            [deltaX, deltaY, isGameOver] = findNewDeltas(ball, computer, player);
         }
-
+        if (ball.x - ball.size <= player.x + player.width) { 
+            [deltaX, deltaY, isGameOver] = findNewDeltas(ball, player, computer);
+        }
         if (deltaX && deltaY) {
             ball.changeDeration(deltaX, deltaY);
         }
 
+        playerScore.textContent = player.getScore().toString(); 
+        computerScore.textContent = computer.getScore().toString();
+        
         if (!isGameOver) {
             requestAnimationFrame(render);
         }

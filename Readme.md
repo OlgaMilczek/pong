@@ -54,7 +54,6 @@ Program powininen być podzielony na dwie gówne sekcje:
 - Metody:
     - Poruszanie paletką
     - Poruszanie paletką przez komputer
-    - Metoda odpowiedzialna za znalezienie nowego kierunku poruszania się piłki (zwraca nowy kierunek)
     - Zwiększanie wyniku gracza
 
 **Plansza/boisko:**
@@ -71,6 +70,7 @@ Program powininen być podzielony na dwie gówne sekcje:
     - Wykrycie odbicia od ściany
     - Odbicie piłki przez ścianę (przekazanie zmiany kierunku do piłki)
     - Wykrycie odbicia przez gracza
+    - Metoda odpowiedzialna za znalezienie nowego kierunku poruszania się piłki (zwraca nowy kierunek)
 
     - Sprawdzenie nowego kierunku piłki nadanego przez paletkę i przekazanie nowego kierunku piłce. 
 
