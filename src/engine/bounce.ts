@@ -1,19 +1,16 @@
-const OBSTACLES = [
-    'wall',
-    'racket'
-];
+import { OBSTACLES } from '../variables';
 
 export function bounce(
     deltaX: number, 
     deltaY: number, 
-    obstacleType: string, 
+    obstacleType: number,
     isMoving : boolean = false
     ) {
-    if (obstacleType === OBSTACLES[0]) {
+    if (obstacleType === OBSTACLES.WALL) {
         return [deltaX, -deltaY];
-    } else if (obstacleType ===  OBSTACLES[1]) {
+    } else if (obstacleType ===  OBSTACLES.RACKET) {
         if (isMoving) {
-            return [-deltaX, deltaY * 1.2];
+            return [-deltaX, deltaY * 1.5];
         }
         return [-deltaX, Math.sign(deltaY)];
     } else {
@@ -23,8 +20,8 @@ export function bounce(
 
 export function bounceCorner(deltaX: number, deltaY: number, corner: -1 | 1 ) {
     if (corner === Math.sign(deltaY)) {
-        return [- deltaX, deltaY * 0.7];
+        return [- deltaX, deltaY * 0.4];
     } else {
-        return [- deltaX, deltaY * 1.4];
+        return [- deltaX, deltaY * 2];
     }
 }

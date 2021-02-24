@@ -5,8 +5,8 @@ import { Racket } from './engine/racket';
 import { bounce } from './engine/bounce';
 import { findNewDeltas } from './engine/findNewDeltas';
 
-import {createCanvas, createScore, drawCourt } from './display/render';
-import { addEventForMove, addEventForMoveStop } from './display/setEventListeners';
+import { createCanvas, createScore, drawCourt } from './display/render';
+import { setEventForMove, setEventForMoveStop } from './display/setEventListeners';
 
 import {
     WIDTH,
@@ -16,7 +16,6 @@ import {
     RACKET_WEIGHT, 
     INITIAL_VELOCITY,
     RACKET_OFFSET,
-    TOLERANCE,
     OBSTACLES } from './variables';
 
 const canvas = createCanvas(WIDTH, HEIGHT);
@@ -35,9 +34,9 @@ if (ctx && scoreEl) {
     playerScore.textContent = player.getScore().toString();
     computerScore.textContent = computer.getScore().toString();
 
-    document.addEventListener('keydown', e => addEventForMove(e, player, HEIGHT));
+    document.addEventListener('keydown', e => setEventForMove(e, player, ball, HEIGHT));
 
-    document.addEventListener('keyup', e => addEventForMoveStop(e, player, HEIGHT));
+    document.addEventListener('keyup', e => setEventForMoveStop(e, player, ball, HEIGHT));
 
     const render = () => {
         drawCourt(ctx, canvas.width, canvas.height, RACKET_OFFSET, RACKET_WEIGHT);
@@ -53,7 +52,7 @@ if (ctx && scoreEl) {
 
         if (ball.y - ball.size < 0 || ball.y + ball.size >= HEIGHT ) {
             //Piłka jest odbita przez ścianę
-            [deltaX, deltaY] = bounce(ball.deltaX, ball.deltaY, OBSTACLES[0]); 
+            [deltaX, deltaY] = bounce(ball.deltaX, ball.deltaY, OBSTACLES.WALL); 
         }
 
         if (ball.x + ball.size >= computer.x ) {

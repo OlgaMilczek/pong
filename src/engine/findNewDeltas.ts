@@ -14,7 +14,7 @@ export const findNewDeltas = (ball: Ball, player: Racket, opponent: Racket): [nu
         } else if (findIsCorner(ball, player) === 1) {
             [deltaX, deltaY] = bounceCorner(ball.deltaX, ball.deltaY, 1);
         } else {
-            [deltaX, deltaY] = bounce(ball.deltaX, ball.deltaY, OBSTACLES[1], player.getIsMoving());
+            [deltaX, deltaY] = bounce(ball.deltaX, ball.deltaY, OBSTACLES.RACKET, player.getIsMoving());
         }
         ball.increaseVelocity();
     } else {
@@ -33,12 +33,10 @@ export const findNewDeltas = (ball: Ball, player: Racket, opponent: Racket): [nu
 }
 
 const findIsCorner = (ball: Ball, player: Racket): number => {
-    if (ball.y - ball.size - TOLERANCE <= player.y && ball.y + ball.size + TOLERANCE <= player.y ) {
-        console.log(2);
-        //Górny narożnik nie działa!!!
+    if (Math.abs((ball.y + ball.size) - player.y) <= TOLERANCE) {
         return 1;
     }
-    else if (ball.y + ball.size + TOLERANCE >= player.y + player.size && ball.y - ball.size + TOLERANCE <= player.y +  player.size) {
+    else if (Math.abs((ball.y - ball.size) - (player.y + player.size)) <= TOLERANCE) {
         return -1;
     }
     return 0;

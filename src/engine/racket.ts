@@ -1,11 +1,9 @@
-enum directions {
-    'UP' = 1,
-    'DOWN' = -1,
-};
+import { DIRECTIONS } from '../variables';
 
 export class Racket {  
     protected score: number = 0;
     protected isMoving: boolean = false;
+    protected velocity: number =  3;
 
     constructor(
         public x: number, 
@@ -14,8 +12,9 @@ export class Racket {
         public width: number) {
     }
 
-    move(direction:directions) {
-        this.y += direction * 5;
+    move(direction:DIRECTIONS, ballDeltaY: number) {
+        this.setVelocity(ballDeltaY);
+        this.y += direction *  this.velocity * 1.5;
         this.isMoving = true;
     }
 
@@ -36,23 +35,24 @@ export class Racket {
     }
 
     moveComputer(height: number, ballY: number, ballDeltaY: number) {
-        let velocity;
-        switch ( Math.floor(Math.abs(ballDeltaY)) ) {
-            case 1:
-                velocity = 6;
-                break;
-            case 2: 
-                velocity = 9
-                break;
-            default:
-                velocity = 3;
-        }
+        this.setVelocity(ballDeltaY);
         if (this.y + this.size /2 < ballY && this.y + this.size < height ) {
-            this.y += velocity;
+            this.y += this.velocity;
         } else if (this.y > 0) {
-            this.y -= velocity;
+            this.y -= this.velocity;
         }
         this.isMoving = false;
+    }
+
+    setVelocity(ballDeltaY: number) {
+        let absFromDeltaY =  Math.floor(Math.abs(ballDeltaY));
+        if ( absFromDeltaY < 1) {
+            this.velocity = 3;
+        } else if (absFromDeltaY <= 2) {
+            this.velocity = 6;
+        } else if (absFromDeltaY > 2) {
+            this.velocity = 9;
+        }
     }
 
     render(ctx: CanvasRenderingContext2D) {
