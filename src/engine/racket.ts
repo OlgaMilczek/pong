@@ -43,9 +43,9 @@ export class Racket implements RacketInterface {
 
     moveComputer(height: number, ballY: number, ballDeltaY: number) {
         this.setVelocity(ballDeltaY);
-        if (this.y + this.size /2 < ballY && this.y + this.size < height ) {
+        if (this.y + this.size / 2 < ballY && this.y + this.size < height ) {
             this.y += this.velocity;
-        } else if (this.y > 0) {
+        } else if (this.y + this.size / 2 > ballY && this.y > 0) {
             this.y -= this.velocity;
         }
         this.isMoving = false;

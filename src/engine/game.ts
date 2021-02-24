@@ -79,7 +79,7 @@ export class Game {
 
     runComputerMove() {
         if (this.ball.x > this.width / 2 && this.ball.deltaX > 0 ) {
-            this.computer.moveComputer(this.ball.y, this.height, this.ball.deltaY );
+            this.computer.moveComputer(this.height, this.ball.y, this.ball.deltaY );
         }
     }
 
