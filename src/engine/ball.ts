@@ -1,4 +1,11 @@
-import { BallInterface } from './interfaces';
+import { MAX_VELOCITY } from '../variables';
+
+interface BallInterface {
+    x: number, 
+    y: number, 
+    deltaY: number,
+    deltaX: number,
+};
 
 export class Ball implements BallInterface {
     constructor(
@@ -6,7 +13,7 @@ export class Ball implements BallInterface {
         public y: number, 
         public deltaY: number, 
         public deltaX: number,
-        public size: number, 
+        private size: number, 
         private velocity: number) {
     }
 
@@ -21,7 +28,9 @@ export class Ball implements BallInterface {
     }
 
     increaseVelocity() {
-        this.velocity += 1;
+        if (this.velocity <= MAX_VELOCITY ) {
+            this.velocity += 0.5;
+        }
     }
 
     resetVelocity(initialVelocity: number) {

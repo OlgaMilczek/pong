@@ -1,6 +1,9 @@
-import { RacketInterface } from './interfaces';
-
 import { DIRECTIONS } from '../variables';
+
+interface RacketInterface {
+    x: number, 
+    y: number,
+};
 
 export class Racket implements RacketInterface {  
     private score: number = 0;
@@ -10,8 +13,8 @@ export class Racket implements RacketInterface {
     constructor(
         public x: number, 
         public y: number, 
-        public size: number,
-        public width: number) {
+        private size: number,
+        private width: number) {
     }
 
     move(direction:DIRECTIONS, ballDeltaY: number) {
