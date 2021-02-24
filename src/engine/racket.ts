@@ -1,8 +1,9 @@
-import { DIRECTIONS } from '../variables';
+import { DIRECTIONS, PLAYERS } from '../variables';
 
 interface RacketInterface {
     x: number, 
     y: number,
+    name: PLAYERS,
 };
 
 export class Racket implements RacketInterface {  
@@ -11,8 +12,9 @@ export class Racket implements RacketInterface {
     private velocity: number =  3;
 
     constructor(
-        public x: number, 
-        public y: number, 
+        public x: number,
+        public y: number,
+        public name: PLAYERS,
         private size: number,
         private width: number) {
     }

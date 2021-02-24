@@ -2,20 +2,35 @@ html, body {
   width: 100%;
   height: 100%;
   margin: 0;
-  font-family: sans-serif;
+  font-family: 'Press Start 2P', cursive;
+  color: rgb(164, 168, 166);
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-color: rgb(40, 43, 41);
+}
+
+canvas {
+  margin: auto;
+  margin-top: 1em;
+}
 
 .score {
-  position: absolute;
-  top: 0; 
-  left: 0;
-  width: 100%;
+  width: 80%;
   
   display:  flex;
   justify-content: space-around;
 
+  &__container {
+    text-align: center;
+  }
+
   &__display {
-    font-size: 2rem;
+    font-size: 1.6em;
+    margin: .5em 0;
   }
 }

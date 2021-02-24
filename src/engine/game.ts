@@ -3,7 +3,7 @@ import { Racket } from './racket';
 
 import { drawLine } from '../display/renderHelperFunctions';
 
-import { OBSTACLES, TOLERANCE } from '../variables';
+import { OBSTACLES, TOLERANCE, PLAYERS } from '../variables';
 
 export class Game {
     private ball: Ball;
@@ -12,6 +12,7 @@ export class Game {
     
     private isGameOver = false;
     private initialDeltas = [1, -1];
+    private winner = PLAYERS.NONE;
 
     constructor(
         private width: number,
@@ -32,13 +33,15 @@ export class Game {
 
         this.player = new Racket(
             this.racketOffset, 
-            this.height / 2 - this.racketSize  / 2, 
+            this.height / 2 - this.racketSize  / 2,
+            PLAYERS.PLAYER,
             this.racketSize , 
             this.racketWeight);
 
         this.computer = new Racket(
             this.width - this.racketOffset,
             this.height / 2 - this.racketSize  / 2,
+            PLAYERS.COMPUTER,
             this.racketSize,
             this.racketWeight);
     }
@@ -47,19 +50,18 @@ export class Game {
         if (this.ball.y - this.ballSize < 0 || this.ball.y + this.ballSize >= this.height ) {
             //Piłka jest odbita przez ścianę
             this.bounce(null, OBSTACLES.WALL);
-            return;
+            return true;
         }
         if (this.ball.x + this.ballSize >= this.computer.x ) {
-            this.setNewDeltas( this.computer, this.player );
-            return;
+            return this.makeMove( this.computer, this.player );;
         }
         if (this.ball.x - this.ballSize <= this.player.x + this.racketWeight ) { 
-            this.setNewDeltas( this.player, this.computer );
-            return;
+            return this.makeMove( this.player, this.computer );
         }
+        return false;
     }
 
-    checkForGameOver() {
+    getGameOver() {
         return this.isGameOver;
     }
 
@@ -71,13 +73,17 @@ export class Game {
         return this.player.getScore().toString();
     }
 
+    getWinner() {
+        return this.winner;
+    }
+
     runComputerMove() {
         if (this.ball.x > this.width / 2 && this.ball.deltaX > 0 ) {
             this.computer.moveComputer(this.ball.y, this.height, this.ball.deltaY );
         }
     }
 
-    setEventForMove = (e: any) => {
+    setEventForMove = (e: KeyboardEvent ) => {
         if (e.key === 'ArrowDown') {
             if (this.player.y + this.racketSize < this.height) {
                 this.player.move(1, this.ball.deltaY);
@@ -89,7 +95,7 @@ export class Game {
         } 
     }
     
-    setEventForMoveStop = (e: any) => {
+    setEventForMoveStop = (e: KeyboardEvent ) => {
         if (e.key === 'ArrowDown') {
             if (this.player.y + this.racketSize < this.height) {
                 this.player.setMoveStop();
@@ -112,7 +118,7 @@ export class Game {
             return;
         }
     }
-
+    
     private bounce( currentPlayer: Racket | null, obstacleType: number ) {
         if (obstacleType === OBSTACLES.WALL && currentPlayer === null ) {
             this.ball.deltaY = -this.ball.deltaY;
@@ -130,31 +136,14 @@ export class Game {
             throw new Error('Wrong obstacle type');
         }
     }
-
-    private setNewDeltas = ( currentPlayer: Racket, opponent: Racket ) => {
-        if (this.ball.y + this.ballSize >= currentPlayer.y && this.ball.y - this.ballSize <= currentPlayer.y + this.racketSize) {
-            if (this.findIsCorner( currentPlayer ) === -1) {
-                this.bounceCorner( -1 );
-            } else if ( this.findIsCorner( currentPlayer ) === 1) {
-                this.bounceCorner(1);
-            } else {
-                this.bounce(currentPlayer, OBSTACLES.RACKET);
-            }
-            this.ball.increaseVelocity();
-        } else {
-            opponent.increaseScore();
-            if (opponent.getScore() === 21 ) {
-                this.setGameOver();
-            } else {
-                //NOWA RUNDA
-                this.ball.resetBallPosition(this.width / 2, this.height/ 2);
-                this.ball.resetVelocity(this.initialVelocity);
-                this.ball.deltaX = -this.ball.deltaX;
-                this.ball.deltaY = Math.sign(this.ball.deltaY);
-            }
-        }
-    }
     
+    private checkForGameOver( currentPlayer:Racket ) {
+        if (currentPlayer.getScore() === 21 ) {
+            return true;
+        }
+        return false;
+    }
+        
     private findIsCorner = ( currentPlayer: Racket ): number => {
         if (Math.abs((this.ball.y + this.ballSize) - currentPlayer.y) <= TOLERANCE) {
             return 1;
@@ -165,8 +154,44 @@ export class Game {
         return 0;
     }
 
+    private makeMove = ( currentPlayer: Racket, opponent: Racket ) => {
+        if (this.ball.y + this.ballSize >= currentPlayer.y && this.ball.y - this.ballSize <= currentPlayer.y + this.racketSize) {
+            if (this.findIsCorner( currentPlayer ) === -1) {
+                this.bounceCorner( -1 );
+            } else if ( this.findIsCorner( currentPlayer ) === 1) {
+                this.bounceCorner(1);
+            } else {
+                this.bounce(currentPlayer, OBSTACLES.RACKET);
+            }
+            this.ball.increaseVelocity();
+            return true;
+        } else {
+            opponent.increaseScore();
+            if ( this.checkForGameOver(opponent) ) {
+                this.setGameOver();
+                this.setWinner(opponent);
+                return false;
+            } else {
+                //NOWA RUNDA
+                this.startNewRound();
+                return false;
+            }
+        }
+    }
+
     private setGameOver() {
         this.isGameOver = true;
+    }
+
+    private setWinner( currentPlayer: Racket ) {
+        this.winner = currentPlayer.name;
+    }
+
+    private startNewRound() {
+        this.ball.resetBallPosition(this.width / 2, this.height/ 2);
+        this.ball.resetVelocity(this.initialVelocity);
+        this.ball.deltaX = -this.ball.deltaX;
+        this.ball.deltaY = Math.sign(this.ball.deltaY);
     }
 
     //Funkcje odpowiedziane za renderowanie

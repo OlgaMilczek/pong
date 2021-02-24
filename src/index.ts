@@ -11,10 +11,11 @@ import {
     RACKET_SIZE,
     RACKET_WEIGHT, 
     INITIAL_VELOCITY,
-    RACKET_OFFSET } from './variables';
+    RACKET_OFFSET,
+    PLAYERS } from './variables';
 
-const canvas = createCanvas(WIDTH, HEIGHT);
 const [scoreEl, playerScore, computerScore ] = createScore();
+const canvas = createCanvas(WIDTH, HEIGHT);
 const ctx = canvas.getContext('2d');
 
 if (ctx && scoreEl) {
@@ -34,18 +35,34 @@ if (ctx && scoreEl) {
 
     document.addEventListener('keyup', e => game.setEventForMoveStop(e));
 
+    const audio = new Audio(require('./assets/ball_hit.wav'));
+    const gameOverSound = new Audio(require('./assets/game_over.wav'));
+    const applause = new Audio(require('./assets/applause.wav'));
+
     const render = () => {
         game.render(ctx); 
 
         game.runComputerMove();
 
-        game.checkForBallMoves()
+        const isMoveMade = game.checkForBallMoves(); 
+
+        if (isMoveMade) {
+            audio.play();
+        }
 
         playerScore.textContent = game.getPlayerScore(); 
         computerScore.textContent = game.getComputerScore();
         
-        if ( !game.checkForGameOver() ) {
+        if ( !game.getGameOver() ) {
             requestAnimationFrame(render);
+        }
+
+        else if (game.getGameOver() ) {
+            if (game.getWinner() === PLAYERS.PLAYER ) {
+                applause.play();
+            } else {
+                gameOverSound.play();
+            }
         }
     }
     render();

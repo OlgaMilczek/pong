@@ -2,15 +2,35 @@ export const createScore = () => {
     const el = document.createElement('div');
     el.classList.add('score');
 
-    //Creating score display
+    const playerContainer = document.createElement('div');
+    playerContainer.classList.add('score__container');
+
+    const playerName = document.createElement('p');
+    playerName.classList.add('score__name');
+    playerName.textContent = 'Your score';
+
     const playerScore = document.createElement('p');
     playerScore.classList.add('score__display');
+
+    playerContainer.appendChild(playerName);
+    playerContainer.appendChild(playerScore);
+
+
+    const computerContainer = document.createElement('div');
+    computerContainer.classList.add('score__container');
+
+    const computerName = document.createElement('p');
+    computerName.classList.add('score__name');
+    computerName.textContent = 'Computer score';
 
     const computerScore = document.createElement('p');
     computerScore.classList.add('score__display');
 
-    el.appendChild(playerScore);
-    el.appendChild(computerScore);
+    computerContainer.appendChild(computerName);
+    computerContainer.appendChild(computerScore);
+
+    el.appendChild(playerContainer);
+    el.appendChild(computerContainer);
 
     document.body.appendChild(el);
 
