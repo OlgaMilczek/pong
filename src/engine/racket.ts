@@ -1,9 +1,11 @@
+import { RacketInterface } from './interfaces';
+
 import { DIRECTIONS } from '../variables';
 
-export class Racket {  
-    protected score: number = 0;
-    protected isMoving: boolean = false;
-    protected velocity: number =  3;
+export class Racket implements RacketInterface {  
+    private score: number = 0;
+    private isMoving: boolean = false;
+    private velocity: number =  3;
 
     constructor(
         public x: number, 
@@ -44,7 +46,7 @@ export class Racket {
         this.isMoving = false;
     }
 
-    setVelocity(ballDeltaY: number) {
+    private setVelocity(ballDeltaY: number) {
         let absFromDeltaY =  Math.floor(Math.abs(ballDeltaY));
         if ( absFromDeltaY < 1) {
             this.velocity = 3;

@@ -1,11 +1,13 @@
-export class Ball {
+import { BallInterface } from './interfaces';
+
+export class Ball implements BallInterface {
     constructor(
         public x: number, 
         public y: number, 
         public deltaY: number, 
         public deltaX: number,
         public size: number, 
-        public velocity: number) {
+        private velocity: number) {
     }
 
     move() {
