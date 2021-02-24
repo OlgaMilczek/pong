@@ -34,18 +34,3 @@ export const drawLine = (ctx: CanvasRenderingContext2D, positionX: number, heigh
     ctx.lineTo(positionX, height);
     ctx.stroke();
 }
-
-export const drawCourt = (
-    ctx: CanvasRenderingContext2D, 
-    courtWidth: number, 
-    courtHeight: number, 
-    racketOffset: number, 
-    racketWeight: number)  =>  {
-
-    ctx.fillStyle = 'gray';
-    ctx.fillRect(0, 0, courtWidth, courtHeight);
-
-    drawLine(ctx, courtWidth/ 2, courtHeight, []);
-    drawLine(ctx, racketOffset + racketWeight - 1, courtHeight, [10, 15]);
-    drawLine(ctx, courtWidth - racketOffset + 1, courtHeight, [10, 15]);
-}
