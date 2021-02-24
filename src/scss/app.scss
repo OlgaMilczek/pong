@@ -1,9 +1,22 @@
+@import 'eightbit';
+
+:root {
+  --outline-width: 6px;
+  --shadow-width: 4px;
+  
+  --shadow-color: rgb(141, 141, 141);
+  --font-family: 'Press Start 2P', cursive;
+
+  --text-color: rgb(164, 168, 166);
+  --background-color:  rgb(40, 43, 41);
+}
+
 html, body {
   width: 100%;
   height: 100%;
   margin: 0;
-  font-family: 'Press Start 2P', cursive;
-  color: rgb(164, 168, 166);
+  font-family: var(--font-family);
+  color: var(--text-color);
 }
 
 body {
@@ -11,7 +24,7 @@ body {
   flex-direction: column;
   align-items: center;
 
-  background-color: rgb(40, 43, 41);
+  background-color: var(--background-color);
 }
 
 canvas {
@@ -32,5 +45,19 @@ canvas {
   &__display {
     font-size: 1.6em;
     margin: .5em 0;
+  }
+}
+
+.info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 3rem;
+  text-align: center;
+
+  &.inactive {
+    display: none;
+    pointer-events: none;
   }
 }

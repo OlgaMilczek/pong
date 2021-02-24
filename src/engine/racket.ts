@@ -63,10 +63,20 @@ export class Racket implements RacketInterface {
     }
 
     render(ctx: CanvasRenderingContext2D) {
+        const shadow1 = new Path2D();
+        shadow1.rect(this.x -5, this.y, this.width + 10, this.size);
+        ctx.fillStyle = 'rgb(70, 77, 72)';
+        ctx.fill(shadow1);
+
+        const shadow2 = new Path2D();
+        shadow2.rect(this.x, this.y-5, this.width, this.size + 10);
+        ctx.fillStyle = 'rgb(70, 77, 72)';
+        ctx.fill(shadow2);
+
         const shape = new Path2D();
         shape.rect(this.x, this.y, this.width, this.size);
 
-        ctx.fillStyle = '#333';
+        ctx.fillStyle = 'rgb(40, 43, 41)';
         ctx.fill(shape);
     }
 }

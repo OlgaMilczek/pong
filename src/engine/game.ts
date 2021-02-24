@@ -198,7 +198,7 @@ export class Game {
     private drawCourt = (
         ctx: CanvasRenderingContext2D)  =>  {
     
-        ctx.fillStyle = 'gray';
+        ctx.fillStyle = ' rgb(164, 168, 166)';
         ctx.fillRect(0, 0, this.width, this.height);
     
         drawLine(ctx, this.width/ 2, this.height, []);

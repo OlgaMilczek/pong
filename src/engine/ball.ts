@@ -46,7 +46,7 @@ export class Ball implements BallInterface {
         const shape = new Path2D();
         shape.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
 
-        ctx.fillStyle = '#555';
+        ctx.fillStyle = 'rgb(71, 33, 30)';
         ctx.fill(shape);
     }
 };

@@ -1,0 +1,55 @@
+
+.eightbit {
+    background: var(--background-color);
+    box-shadow: inset calc(-1 *var(--shadow-width)) calc(-1* var(--shadow-width)) 0px 0px var(--shadow-color);
+
+    &::after,
+    &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        box-sizing: content-box;
+    }
+
+    &::before {
+        top: calc(-1 * var(--outline-width));
+        left: 0;
+        border-top: var(--outline-width) var(--text-color) solid;
+        border-bottom: var(--outline-width) var(--text-color) solid;
+    }
+
+    &::after {
+        left: calc(-1 * var(--outline-width));;
+        top: 0;
+        border-left: var(--outline-width) var(--text-color) solid;
+        border-right: var(--outline-width) var(--text-color) solid;
+    }
+
+    &__btn {
+        display: inline-block;
+        position: relative;
+
+        text-align: center;
+        font-family: var(--font-family);
+        font-size: 1.2rem;
+        color: inherit;
+
+        padding: 1rem;
+        margin: 1rem auto;
+
+        cursor: pointer; 
+
+        z-index: inherit;
+
+        &:hover {
+            background: var(--sec-button-background);
+            box-shadow: inset calc(-1,5 var(--shadow-width)) calc(var(--shadow-width)* -1.5) 0px 0px var(--shadow-color);
+        }
+
+        &:active {
+            box-shadow: inset var(--shadow-width) var(--shadow-width) 0px 0px var(--shadow-color);
+        }
+
+    }
+}
