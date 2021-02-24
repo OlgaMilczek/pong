@@ -17,14 +17,19 @@ import {
 const startButton = document.getElementById('start-button');
 let gameStart = false;
 
-document.addEventListener('click', () => {
-    const info = document.getElementById('info');
-    info.classList.add('inactive');
-    if (!gameStart) {
-        startGame();
-    }
-    gameStart = true;
-});
+if (startButton !== null) {
+    startButton.addEventListener('click', () => {
+        const info = document.getElementById('info');
+        if (info !== null) {
+            info.classList.add('inactive');
+            if (!gameStart) {
+                startGame();
+            }
+        }
+        gameStart = true;
+    });
+}
+
 
 function startGame() {
     const [scoreEl, playerScore, computerScore ] = createScore();

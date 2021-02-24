@@ -18,18 +18,19 @@ export class Ball implements BallInterface {
     }
 
     move() {
-        this.x += this.deltaX * this.velocity;
-        this.y += this.deltaY * this.velocity;
+        let modifier = this.velocity / Math.sqrt(this.deltaX * this.deltaX + this.deltaY * this.deltaY)
+        this.x += this.deltaX * modifier;
+        this.y += this.deltaY * modifier;
     }
 
-    changeDeration(newDeltaX: number, newDeltaY: number) {
+    changeDuration(newDeltaX: number, newDeltaY: number) {
         this.deltaY = newDeltaY; 
         this.deltaX = newDeltaX;
     }
 
     increaseVelocity() {
         if (this.velocity <= MAX_VELOCITY ) {
-            this.velocity += 0.5;
+            this.velocity += 1;
         }
     }
 

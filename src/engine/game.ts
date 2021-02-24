@@ -52,10 +52,10 @@ export class Game {
             this.bounce(null, OBSTACLES.WALL);
             return true;
         }
-        if (this.ball.x + this.ballSize >= this.computer.x ) {
+        if (this.ball.x + this.ballSize >= this.computer.x && this.ball.deltaX > 0) {
             return this.makeMove( this.computer, this.player );;
         }
-        if (this.ball.x - this.ballSize <= this.player.x + this.racketWeight ) { 
+        if (this.ball.x - this.ballSize <= this.player.x + this.racketWeight && this.ball.deltaX < 0) { 
             return this.makeMove( this.player, this.computer );
         }
         return false;
@@ -109,7 +109,7 @@ export class Game {
 
     private bounceCorner(corner: -1 | 1 ) {
         if (corner === Math.sign(this.ball.deltaY)) {
-            this.ball.deltaX = - this.ball.deltaX;
+            this.ball.deltaX = -this.ball.deltaX;
             this.ball.deltaY = this.ball.deltaY * 0.4;
             return;
         } else {
