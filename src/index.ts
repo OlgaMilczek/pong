@@ -3,6 +3,7 @@ import './scss/app.scss';
 import { Game } from './engine/game';
 
 import { createCanvas, createScore } from './display/renderHelperFunctions';
+import { showGameOverScreen } from './display/gameOverScreen';
 
 import {
     WIDTH,
@@ -15,19 +16,22 @@ import {
     PLAYERS } from './variables';
 
 const startButton = document.getElementById('start-button');
+const info = document.getElementById('info');
 let gameStart = false;
 
-if (startButton !== null) {
-    startButton.addEventListener('click', () => {
-        const info = document.getElementById('info');
-        if (info !== null) {
-            info.classList.add('inactive');
-            if (!gameStart) {
-                startGame();
-            }
+function handleClick() {
+    if (info !== null && startButton !== null) {
+        info.classList.add('inactive');
+        if (!gameStart) {
+            startGame();
+            startButton.removeEventListener('click', handleClick);
         }
         gameStart = true;
-    });
+    }    
+};
+
+if (startButton !== null && info !== null) {
+    startButton.addEventListener('click', handleClick);
 }
 
 
@@ -59,7 +63,7 @@ function startGame() {
     
         const render = () => {
             game.render(ctx); 
-    
+        
             game.runComputerMove();
     
             const isMoveMade = game.checkForBallMoves(); 
@@ -76,11 +80,15 @@ function startGame() {
             }
     
             else if (game.getGameOver() ) {
-                if (game.getWinner() === PLAYERS.PLAYER ) {
-                    applause.play();
-                } else {
-                    gameOverSound.play();
-                }
+                gameStart = false;
+                if (startButton !== null && info !== null) {
+                    showGameOverScreen(info, startButton, canvas, scoreEl, game.getWinner(), startGame);
+                    if (game.getWinner() === PLAYERS.PLAYER ) {
+                        applause.play();
+                    } else {
+                        gameOverSound.play();
+                    }
+                }    
             }
         }
         render();
