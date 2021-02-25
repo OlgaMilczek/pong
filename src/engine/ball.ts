@@ -8,6 +8,8 @@ interface BallInterface {
 };
 
 export class Ball implements BallInterface {
+    private angle = 0;
+
     constructor(
         public x: number, 
         public y: number, 
@@ -30,7 +32,8 @@ export class Ball implements BallInterface {
 
     increaseVelocity() {
         if (this.velocity <= MAX_VELOCITY ) {
-            this.velocity += 1;
+            this.velocity++;
+            this.angle++;
         }
     }
 
@@ -44,10 +47,17 @@ export class Ball implements BallInterface {
     }
 
     render(ctx: CanvasRenderingContext2D) {
-        const shape = new Path2D();
-        shape.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+        const img = new Image();
+        img.src = require('../assets/img/ball.png');
 
-        ctx.fillStyle = 'rgb(71, 33, 30)';
-        ctx.fill(shape);
+        ctx.save();  
+        ctx.translate(this.x, this.y);  
+        ctx.rotate(this.angle * 0.2);
+        ctx.translate(-this.x, -this.y);  
+        ctx.drawImage(img, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);  
+        ctx.restore();  
+   
+        this.angle++;
+
     }
 };

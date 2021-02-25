@@ -48,9 +48,11 @@ export const createCanvas = (width: number, height: number): HTMLCanvasElement =
 }
 
 export const drawLine = (ctx: CanvasRenderingContext2D, positionX: number, height: number, pattern: number[]) =>  {
+    ctx.lineWidth = 5;
     ctx.beginPath();
     ctx.setLineDash(pattern);
     ctx.moveTo(positionX, 0);
     ctx.lineTo(positionX, height);
+    ctx.strokeStyle = 'rgb(216, 216, 216)';
     ctx.stroke();
 }

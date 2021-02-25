@@ -138,7 +138,7 @@ export class Game {
     }
     
     private checkForGameOver( currentPlayer:Racket ) {
-        if (currentPlayer.getScore() === 21 ) {
+        if (currentPlayer.getScore() === 3 ) {
             return true;
         }
         return false;
@@ -198,12 +198,12 @@ export class Game {
     private drawCourt = (
         ctx: CanvasRenderingContext2D)  =>  {
     
-        ctx.fillStyle = ' rgb(164, 168, 166)';
+        ctx.fillStyle = 'rgb(60, 68, 64)';
         ctx.fillRect(0, 0, this.width, this.height);
     
         drawLine(ctx, this.width/ 2, this.height, []);
-        drawLine(ctx, this.racketOffset + this.racketWeight - 1, this.height, [10, 15]);
-        drawLine(ctx, this.width - this.racketOffset + 1, this.height, [10, 15]);
+        drawLine(ctx, this.racketOffset + this.racketWeight - 1, this.height, [20, 15]);
+        drawLine(ctx, this.width - this.racketOffset + 1, this.height, [20, 15]);
     }
 
     render(ctx: CanvasRenderingContext2D) {
@@ -211,8 +211,8 @@ export class Game {
 
         this.ball.move();
 
-        this.player.render(ctx);
-        this.computer.render(ctx);
+        this.player.render(ctx, 'rgb(71, 33, 30)', 'rgb(85, 43, 40)');
+        this.computer.render(ctx,  'rgb(26, 49, 75)', ' rgb(37, 61, 88)');
         this.ball.render(ctx)
     }
 }
