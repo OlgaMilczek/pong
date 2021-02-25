@@ -138,7 +138,7 @@ export class Game {
     }
     
     private checkForGameOver( currentPlayer:Racket ) {
-        if (currentPlayer.getScore() === 3 ) {
+        if (currentPlayer.getScore() === 21 ) {
             return true;
         }
         return false;

@@ -73,5 +73,3 @@ Program powininen być podzielony na dwie gówne sekcje:
     - Metoda odpowiedzialna za znalezienie nowego kierunku poruszania się piłki (zwraca nowy kierunek)
 
     - Sprawdzenie nowego kierunku piłki nadanego przez paletkę i przekazanie nowego kierunku piłce. 
-
-
