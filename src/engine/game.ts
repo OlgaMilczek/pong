@@ -41,7 +41,7 @@ export class Game {
         this.computer = new Racket(
             this.width - this.racketOffset,
             this.height / 2 - this.racketSize  / 2,
-            PLAYERS.COMPUTER,
+            PLAYERS.COMPUTER, 
             this.racketSize,
             this.racketWeight);
     }
